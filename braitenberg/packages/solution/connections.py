@@ -7,7 +7,7 @@ def get_motor_left_matrix(shape: Tuple[int, int]) -> np.ndarray:
     res = np.zeros(shape=shape, dtype="float32")
 
     # The peak of our mountain shape
-    peak = 0
+    peak = 150
     mid = shape[1] // 2
     # The y coord at which point & below which we accept everything
     full = math.floor(0.85*shape[0])
@@ -19,8 +19,8 @@ def get_motor_left_matrix(shape: Tuple[int, int]) -> np.ndarray:
     # The sloped portion
     for i in range(peak, full):
         partial = (i-peak)/(full-peak)
-        res[i, mid-math.floor((i**1.95)/(full)):mid] = 1
-        res[i, (mid + 1):(mid + math.floor((i**1.95)/(full)))] = -1
+        res[i, mid-math.floor((i**2)/(1.5*full)):mid] = partial**2
+        res[i, (mid + 1):(mid + math.floor((i**1.95)/(full)))] = -(partial**2)
         # res[i, mid-math.floor((mid * partial)):mid] = 1
         # res[i, (mid + 1):(mid + math.floor(mid * partial))] = -1
     
