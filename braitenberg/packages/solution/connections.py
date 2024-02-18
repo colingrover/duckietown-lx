@@ -6,7 +6,7 @@ import numpy as np
 def get_motor_left_matrix(shape: Tuple[int, int]) -> np.ndarray:
     res = np.zeros(shape=shape, dtype="float32")
 
-    full = shape[0]
+    full = shape[0]-50
 
     res[full:, :(shape[1] // 2)] = 1
     res[full:, ((shape[1] // 2) + 1):] = -1
