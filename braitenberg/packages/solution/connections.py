@@ -6,15 +6,23 @@ import numpy as np
 def get_motor_left_matrix(shape: Tuple[int, int]) -> np.ndarray:
     res = np.zeros(shape=shape, dtype="float32")
 
-    full = shape[0]-50
+    # The peak of our mountain shape
+    peak = 0
+    mid = shape[1] // 2
+    # The y coord at which point & below which we accept everything
+    full = math.floor(0.85*shape[0])
 
-    res[full:, :(shape[1] // 2)] = 1
-    res[full:, ((shape[1] // 2) + 1):] = -1
+    # The rectangle at the bottom
+    res[full:, :mid] = 1
+    res[full:, (mid + 1):] = -1
 
-    for i in range(200, full):
-        res[i, (full-i):(shape[1] // 2)] = 1
-        res[i, ((shape[1] // 2) + 1):(shape[1] - (full-i))] = -1
-    # res[2*shape[0]//3:, ((shape[1] // 2) + 1):] = -1
+    # The sloped portion
+    for i in range(peak, full):
+        partial = (i-peak)/(full-peak)
+        res[i, mid-math.floor((i**1.95)/(full)):mid] = 1
+        res[i, (mid + 1):(mid + math.floor((i**1.95)/(full)))] = -1
+        # res[i, mid-math.floor((mid * partial)):mid] = 1
+        # res[i, (mid + 1):(mid + math.floor(mid * partial))] = -1
     
     return res
 
