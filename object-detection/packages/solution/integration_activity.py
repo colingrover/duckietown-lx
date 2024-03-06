@@ -3,7 +3,7 @@ from typing import Tuple
 
 def DT_TOKEN() -> str:
     # TODO: change this to your duckietown token
-    dt_token = "XXXXXXXXXXXXXXXXXXXXXXXXXXX"
+    dt_token = "XXXXXXXXXXXXXXXXXXXXXXXXXXXX"
     return dt_token
 
 
@@ -58,4 +58,15 @@ def filter_by_bboxes(bbox: Tuple[int, int, int, int]) -> bool:
                 This means the shape of bbox is (leftmost x pixel, topmost y, rightmost x, bottommost y)
     """
     # TODO: Like in the other cases, return False if the bbox should not be considered.
-    return True
+    retVal = True
+    imDim = 416
+
+    leftmostX, topmostY, rightmostX, bottommostY = bbox # Unpack the tuple
+
+    if (bottommostY < 5*imDim/6): # If bounding box isn't in lower sixth of image, it may be ignorable
+        if (abs(bottommostY - topmostY) + abs(rightmostX-leftmostX) < 100): # Small ==> far away... ignore
+            retVal = False
+        elif (bottommostY < 2*imDim/3 or rightmostX < imDim/10 or leftmostX > (9*imDim)/10): # Ignore boxes contained on far sides or in upper 2 thirds
+            retVal = False
+
+    return retVal
