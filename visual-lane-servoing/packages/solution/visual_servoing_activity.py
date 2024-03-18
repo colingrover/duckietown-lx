@@ -46,8 +46,15 @@ def detect_lane_markings(image: np.ndarray) -> Tuple[np.ndarray, np.ndarray]:
     """
     h, w, _ = image.shape
 
-    # TODO: implement your own solution here
-    mask_left_edge = np.random.rand(h, w)
-    mask_right_edge = np.random.rand(h, w)
+    white_lower_hsv = np.array([0, 0, 150])
+    white_upper_hsv = np.array([179, 45, 255])
+    yellow_lower_hsv = np.array([20, 115, 166])
+    yellow_upper_hsv = np.array([28, 255, 240])
+
+    # Convert the image to HSV for any color-based filtering
+    imghsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+
+    mask_right_edge = cv2.inRange(imghsv, white_lower_hsv, white_upper_hsv)
+    mask_left_edge = cv2.inRange(imghsv, yellow_lower_hsv, yellow_upper_hsv)
 
     return mask_left_edge, mask_right_edge
