@@ -32,8 +32,8 @@ def get_steer_matrix_right_lane_markings(shape: Tuple[int, int]) -> np.ndarray:
     """
 
     # TODO: implement your own solution here
-    steer_matrix_left = np.zeros(shape)
-    steer_matrix_left[:, (shape[1]//2):] = 1 # Left half only
+    steer_matrix_right = np.zeros(shape)
+    steer_matrix_right[:, (shape[1]//2):] = 1 # Left half only
     # ---
     return steer_matrix_right
 
